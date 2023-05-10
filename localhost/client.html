@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>test</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+
+        <div id="browser_notifier">
+        </div>
+
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <script type="module" async defer>
+
+//./readme.md:start
+//md: # import lib
+import {
+    f_add_css,
+} from "./client.module.js"
+// } from "https://deno.land/x/f_add_css@[version]/mod.js"
+//md: # most basic example add css by a string
+f_add_css('*{margin:0; padding:0; font-family:sans}')
+//md: # more complex string using the power of js .map and .join
+f_add_css(
+  [
+    `*{
+      margin:0; 
+      padding: 0;
+      color: orange;
+    }`,
+    [
+      `
+        p{color:red}
+      `, 
+      `
+        h2{color:blue}
+      `, 
+    ].map(s=>`.my_prefix_class ${s}`).join("\r\n")
+  ].join('r\n')
+)
+//md: # add a css via url
+f_add_css(
+  'https://cdn.simplecss.org/simple.css'
+)
+
+//md: # add a css to a certain document
+f_add_css(
+  '*{color:red !important}',
+  document.querySelector('iframe').contentWindow.document, 
+)
+
+//./readme.md:end
+
+        </script>
+      <h2>
+        im a h2
+      </h2>
+      <p>
+        hello
+      </p>
+    <div class="my_prefix_class">
+      <h2>
+        im a h2
+      </h2>
+      <p>
+        hello
+      </p>
+    </div>
+    <iframe src="http://localhost:8080/client.module.js"></iframe>
+
+    </body>
+</html>
