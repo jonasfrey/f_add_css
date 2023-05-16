@@ -26,6 +26,7 @@
 //md: # import lib
 import {
     f_add_css,
+    f_s_css_prefixed,
 } from "./client.module.js"
 // } from "https://deno.land/x/f_add_css@[version]/mod.js"
 //md: # most basic example add css by a string
@@ -59,6 +60,20 @@ f_add_css(
   document.querySelector('iframe').contentWindow.document, 
 )
 
+
+//md: # prefix css with for example a class
+let s_css = `
+  *{
+    color:blue
+  }
+`
+f_add_css(
+  f_s_css_prefixed(
+    '.all_blue', 
+    s_css
+  )
+)
+
 //./readme.md:end
 
         </script>
@@ -76,7 +91,15 @@ f_add_css(
         hello
       </p>
     </div>
+    <div class="all_blue">
+      <h2>
+        im a h2
+      </h2>
+      <p>
+        hello
+      </p>
+    </div>
     <iframe src="http://localhost:8080/client.module.js"></iframe>
-
+    <
     </body>
 </html>

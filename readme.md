@@ -1,8 +1,9 @@
-<!-- {"s_msg":"this file was automatically generated","s_by":"f_generate_markdown.module.js","s_ts_created":"Wed May 10 2023 14:26:39 GMT+0200 (Central European Summer Time)","n_ts_created":1683721599257} -->
+<!-- {"s_msg":"this file was automatically generated","s_by":"f_generate_markdown.module.js","s_ts_created":"Tue May 16 2023 13:21:37 GMT+0200 (Central European Summer Time)","n_ts_created":1684236097773} -->
 # import lib
 ```javascript
 import {
     f_add_css,
+    f_s_css_prefixed,
 } from "./client.module.js"
 // } from "https://deno.land/x/f_add_css@[version]/mod.js"
 ```
@@ -42,6 +43,22 @@ f_add_css(
 f_add_css(
   '*{color:red !important}',
   document.querySelector('iframe').contentWindow.document, 
+)
+
+
+```
+# prefix css with for example a class
+```javascript
+let s_css = `
+  *{
+    color:blue
+  }
+`
+f_add_css(
+  f_s_css_prefixed(
+    '.all_blue', 
+    s_css
+  )
 )
 
 ```
