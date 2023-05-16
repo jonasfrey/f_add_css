@@ -15,17 +15,23 @@ let f_s_css_prefixed = function(
     s_prefix
 ){
     s_css = s_css.replace(/(\r\n|\n|\r)/gm, "");
-    s_css = s_css.split("{")
+    let a_s_css = s_css.split("{")
     // console.log(s_css)
-    s_css = s_css.filter(s=>s.trim()!='');
-    s_css = s_css.map(
+    a_s_css = a_s_css.filter(s=>s.trim()!='');
+    s_css = a_s_css.map(
         function(s, n_idx){
+
             let n_idx_start = s.indexOf("}");
-            let s_sub = s.substring(n_idx_start);
-            s.replace(s_sub, s_sub.split(",").map(s=>`${s_prefix} ${s}`).join(","))
+            let s_sub = s.substring(n_idx_start+1);
+
+            if(s_sub.trim() != ''){
+                s = s.replace(s_sub, s_sub.split(",").map(s=>`${s_prefix} ${s}`).join(","))
+            }
             return s 
         }
     ).join("{")
+    // console.log(s_css)
+
     return s_css;
     // return s_css.split("}").filter(s=>s.trim()!='').map(s=>`${s}}`.split(",").map(s=>`${s_prefix} ${s}`).join(',')).flat().join('\n')
 }

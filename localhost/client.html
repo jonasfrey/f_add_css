@@ -63,15 +63,21 @@ f_add_css(
 
 //md: # prefix css with for example a class
 let s_css = `
-  *{
+  p{
     color:blue
   }
+  *{
+    color: blue
+  }
 `
-f_add_css(
+let s_css_prefixed = (
   f_s_css_prefixed(
-    '.all_blue', 
-    s_css
+    s_css,
+    '.all_blue'
   )
+)
+f_add_css(
+  s_css_prefixed
 )
 
 //./readme.md:end
@@ -100,6 +106,6 @@ f_add_css(
       </p>
     </div>
     <iframe src="http://localhost:8080/client.module.js"></iframe>
-    <
+    
     </body>
 </html>
