@@ -1,4 +1,4 @@
-import {O_webserver} from "https://deno.land/x/o_webserver@8.7/O_webserver.module.js"
+import {O_webserver} from "https://deno.land/x/o_webserver@10.1/O_webserver.module.js"
 
 
 //windows

@@ -1,4 +1,5 @@
 var o_webserver_config = {
+  b_log_requests: false,
   o_default_domain_o_config: {
       s_default_file: "client.html",
   },
@@ -35,5 +36,6 @@ var o_webserver_config = {
 import {f_evaluate_object} from "https://deno.land/x/f_evaluate_object@0.1/f_evaluate_object.module.js"
 
 await f_evaluate_object(o_webserver_config,o_webserver_config)
+o_webserver_config.b_log_requests = false
 
 export {o_webserver_config}
