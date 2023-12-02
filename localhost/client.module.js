@@ -133,7 +133,7 @@ let f_s_css_from_o_variables = function(o_variables){
                                 o_variables[`o_hsla_addition_vector_${s}`]
                             )
                         }
-                        console.log(o_vec)
+                        // console.log(o_vec)
                         return `color: ${f_s_hsla(o_vec)}`
                     })()}
                 }

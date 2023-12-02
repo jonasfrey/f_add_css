@@ -57,4 +57,17 @@ f_add_css(
   s_css_prefixed
 )
 
+//md: # theme 
+//md: there is a also a small 'customizable' theme
+import { 
+  o_variables, 
+  f_s_css_from_o_variables,
+} from "./client.module.js"
+
+o_variables.n_rem_font_size_base = 1.5 // adjust font size, other variables can also be adapted before adding the css to the dom
+f_add_css(
+  f_s_css_from_o_variables(
+    o_variables
+  )
+);
 //./readme.md:end
