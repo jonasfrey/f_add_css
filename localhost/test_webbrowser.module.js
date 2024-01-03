@@ -2,15 +2,25 @@
 import {
     f_o_html__and_make_renderable
   } from "https://deno.land/x/f_o_html_from_o_js@2.1/mod.js"
+  let a_s_descendar_char = [ 'p', 'q', 'y', 'g', 'j' ];//chars that get below the baseline
+
   document.body.appendChild(await f_o_html__and_make_renderable(
     {
       a_o: [
-        ...['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span'].map(s=>{return {s_tag: s, innerText:`this is a '${s}' element`}}), 
+        ...['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'a', 'span'].map(s=>{return {
+                s_tag: s,
+                innerText:`this is a '${s}' element: ${a_s_descendar_char.join(',')}`
+            }}), 
         {
           s_tag: "iframe", 
           src: 'https://localhost:8443/localhost/client.module.js'
         }, 
-        ...['clickable', 'clickable clicked'].map(s=>{return {class: s, innerText: `this is a '.${s.split(' ').join('.')}' element`}}), 
+        ...['clickable', 'clickable clicked'].map(s=>{
+            return {
+                class: s,
+                innerText: `this is a '.${s.split(' ').join('.')}' element`
+            }
+        }), 
         {
           s_tag: "span", 
           class: "clickable", 
@@ -154,7 +164,7 @@ let a_o_test = [
         }
     ),
     f_o_test(
-        "add_some_css", 
+        "change_css_variables", 
         async()=>{
             //./readme.md:start
             //md: # customize 
@@ -166,12 +176,13 @@ let a_o_test = [
             // } from "https://deno.land/x/f_add_css@[version]/mod.js"
 
             o_variables.n_rem_font_size_base = 1. // adjust font size, other variables can also be adapted before adding the css to the dom
-            o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for interactive elements 
-            f_add_css(
-                f_s_css_from_o_variables(
-                    o_variables
-                )
-            );
+            o_variables.n_rem_padding_interactive_elements = 0.2; // adjust padding for interactive elements 
+            o_variables.n_rem_margin_bottom_interactive_elements = .2;
+            let s_css = f_s_css_from_o_variables(
+                o_variables
+            )
+            console.log(s_css)
+            f_add_css(s_css);
             //./readme.md:end
         }
     ),

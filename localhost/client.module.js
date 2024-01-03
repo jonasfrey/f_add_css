@@ -100,6 +100,9 @@ let o_variables = {
     a_n_factor_heading_font_size: [
         2.,1.8,1.6,1.4,1.2, 1.
     ],
+    a_n_factor_heading_margin_botton: [
+        1., 0.8, .6, .4, .2, .1
+    ],
 
     o_hsla_primary: new O_vec4(0.5, .85, 0.8,0.9), 
     o_hsla_secondary: new O_vec4(0.1, .85, 0.8,0.9),
@@ -107,7 +110,9 @@ let o_variables = {
     n_rem_border_size_interactive_elements: 0.00,
     n_px_border_clickable_with_border: 1,
     n_px_border_radius: 2,
-    s_border_style: 'dotted',
+    s_border_style: 'dotted', 
+    n_nor_line_height_p: 1.5,
+    n_rem_margin_bottom_interactive_elements: 0.2
 };
 
 let f_s_css_from_o_variables = function(o_variables){
@@ -124,18 +129,73 @@ let f_s_css_from_o_variables = function(o_variables){
     let a_s_state = ['','hover', 'active',];
     return `
 
+        /* http://meyerweb.com/eric/tools/css/reset/ 
+        v2.0 | 20110126
+        License: none (public domain)
+        */
+
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed, 
+        figure, figcaption, footer, header, hgroup, 
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure, 
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+        body {
+            line-height: 1;
+        }
+        ol, ul {
+            list-style: none;
+        }
+        blockquote, q {
+            quotes: none;
+        }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
         html{
+            line-heigth: 100%;
             font-size: ${o_variables.n_rem_font_size_base}rem;
             font-family:helvetica;
             background: ${f_s_hsla(o_variables.o_hsla__bg)};
             color: ${f_s_hsla(o_variables.o_hsla__fg)};
         }
         ${o_variables.a_n_factor_heading_font_size.map((n,n_idx)=>{
-            return `h${n_idx+1}{font-size: ${n*o_variables.n_rem_font_size_base}rem}`
+            let n_factor_margin_bottom = o_variables.a_n_factor_heading_margin_botton[n_idx];
+            return `h${n_idx+1}{
+                font-size: ${n*o_variables.n_rem_font_size_base}rem;
+                margin-bottom: ${n_factor_margin_bottom*o_variables.n_rem_font_size_base}rem
+            }`
         }).join('\n')}
         ${a_s_selector_clickable.map(s=>{
             return `
             ${s}{
+                margin-bottom: ${o_variables.n_rem_margin_bottom_interactive_elements}rem;
                 outline:none;
                 padding:${o_variables.n_rem_padding_interactive_elements}rem;
                 border-radius:${o_variables.n_px_border_radius}px;
@@ -186,40 +246,16 @@ let f_s_css_from_o_variables = function(o_variables){
         .input{
             display:flex;
         }
-
         .d_flex{
             display: flex;
             flex-wrap: wrap;
         }
-
-        .w_1_t_7{
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            flex: 1 1 calc(100%/7);
-        }
-
-        .w_1_t_3{
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            flex:1 1 calc(100%/3);
-        }
-        *{
-            padding: 0;
-            margin:0;
-        }
         span{
             display: inline-block;
         }
-
-        .border_shadow_popup{
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        p,span{
+            line-height:${parseInt(o_variables.n_nor_line_height_p*100)}%;
         }
-        .theme_dark .border_shadow_popup{
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-        }
-
         ${(new Array(20).fill(0)).map(
             function(n, n_idx){
                 let num = (n_idx /10)
@@ -233,8 +269,7 @@ let f_s_css_from_o_variables = function(o_variables){
                 `
             }
         ).join("\n")} 
-        
-        
+    
         ${a_s_state.map(s=>{
             return `
                 a${(s!='')?`:${s}`:''}{
