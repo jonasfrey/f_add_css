@@ -81,17 +81,6 @@ let f_s_hsla = function(o_hsla){
 }
 
 
-let o_variables_light = {
-    o_hsla__fg:                 new O_vec4(.0, .0, .1, .93), 
-    o_hsla__fg_hover:           new O_vec4(.0, .0, .1, .93), 
-    o_hsla__fg_active:          new O_vec4(.0, .0, .1, .93), 
-    o_hsla__fg_active_hover:    new O_vec4(.0, .0, .1, .93), 
-    
-    o_hsla__bg:                 new O_vec4(.0, .0, .1, .93), 
-    o_hsla__bg_hover:           new O_vec4(.0, .0, .1, .93), 
-    o_hsla__bg_active:          new O_vec4(.0, .0, .1, .93), 
-    o_hsla__bg_active_hover:    new O_vec4(.0, .0, .1, .93), 
-}
 
 let o_variables = {
 
@@ -113,32 +102,27 @@ let o_variables = {
     ],
 
     o_hsla_primary: new O_vec4(0.5, .85, 0.8,0.9), 
-    o_hsla_secondary: new O_vec4(0.1, .85, 0.8,0.9) 
-
+    o_hsla_secondary: new O_vec4(0.1, .85, 0.8,0.9),
+    n_rem_padding_interactive_elements: 1.,
+    n_rem_border_size_interactive_elements: 0.00,
+    n_px_border_clickable_with_border: 1,
+    n_px_border_radius: 2,
+    s_border_style: 'dotted',
 };
 
 let f_s_css_from_o_variables = function(o_variables){
-    let a_s_selector_clickable = [
-        '.clickable', 'button', 'input', 'textarea', 'select', 'iframe'
+    let a_s_selector_state_focus_or_active_or_clicked = [
+        '.clicked', 'active', 'focus'
     ]
-    let a_s_state = ['','hover', 'active'];
+    let a_s_selector_clickable_with_border = [
+        'button', 'input', 'textarea', 'select',
+    ]
+    let a_s_selector_clickable = [
+        ...a_s_selector_clickable_with_border,
+        '.clickable', 'iframe'
+    ]
+    let a_s_state = ['','hover', 'active',];
     return `
-        ${a_s_state.map(s=>{
-            return `
-                a${(s!='')?`:${s}`:''}{
-                    ${(()=>{
-                        let o_vec = o_variables.o_hsla_primary
-                        if(s!=''){
-                            o_vec = o_vec.add(
-                                o_variables[`o_hsla_addition_vector_${s}`]
-                            )
-                        }
-                        // console.log(o_vec)
-                        return `color: ${f_s_hsla(o_vec)}`
-                    })()}
-                }
-            `
-        }).join('\n')}
 
         html{
             font-size: ${o_variables.n_rem_font_size_base}rem;
@@ -149,45 +133,56 @@ let f_s_css_from_o_variables = function(o_variables){
         ${o_variables.a_n_factor_heading_font_size.map((n,n_idx)=>{
             return `h${n_idx+1}{font-size: ${n*o_variables.n_rem_font_size_base}rem}`
         }).join('\n')}
+        ${a_s_selector_clickable.map(s=>{
+            return `
+            ${s}{
+                outline:none;
+                padding:${o_variables.n_rem_padding_interactive_elements}rem;
+                border-radius:${o_variables.n_px_border_radius}px;
+                ${(a_s_selector_clickable_with_border.includes(s)) ? `border-width: ${o_variables.n_px_border_clickable_with_border}px;`: ``}
+                ${(a_s_selector_clickable_with_border.includes(s)) ? `border-style: ${o_variables.s_border_style};`: ``}
+                background: ${f_s_hsla(o_variables.o_hsla__bg)};
+                color: ${f_s_hsla(o_variables.o_hsla__fg)};
+                border-color: ${f_s_hsla(o_variables.o_hsla__fg)};
+                font-size: inherit;
+            }
+            ${[`${s}:hover`, `${s}.hovered`].map(s2=>{
+                return `
+                ${s2}{
+                    background: ${f_s_hsla(o_variables.o_hsla__bg_hover)};
+                    color: ${f_s_hsla(o_variables.o_hsla__fg_hover)};
+                    border-color: ${f_s_hsla(o_variables.o_hsla__fg_hover)};
+                    cursor:pointer;
+                }
+                `
+            }).join('\n')}
+            ${[`${s}.clicked`, `${s}:focus`, `${s}:active`].map(s2=>{
+                return `
+                ${s2}{
+                    background: ${f_s_hsla(o_variables.o_hsla__bg_active)};
+                    color: ${f_s_hsla(o_variables.o_hsla__fg_active)};
+                    border-color: ${f_s_hsla(o_variables.o_hsla__fg_active)};
+                    cursor:pointer;
+                }
+                `
+            }).join('\n')}
+            ${[`${s}.clicked:hover`, `${s}:focus:hover`, `${s}:active:hover`].map(s2=>{
+                return `
+                ${s2}{
+                    background: ${f_s_hsla(o_variables.o_hsla__bg_active_hover)};
+                    color: ${f_s_hsla(o_variables.o_hsla__fg_active_hover)};
+                    border-color: ${f_s_hsla(o_variables.o_hsla__fg_active_hover)};
+                    cursor:pointer;
+                }
+                `
+            }).join('\n')}
 
-        ${a_s_selector_clickable.map(s=>`${s}`).join(',')}{
-            padding:1rem;
-            border-radius:3px;
-            background: ${f_s_hsla(o_variables.o_hsla__bg)};
-            color: ${f_s_hsla(o_variables.o_hsla__fg)};
-            font-size: inherit;
-        }
-        ${a_s_selector_clickable.map(s=>`${s}:hover`).join(',')}{
-            background: ${f_s_hsla(o_variables.o_hsla__bg_hover)};
-            color: ${f_s_hsla(o_variables.o_hsla__fg_hover)};
-            cursor:pointer;
-        }
-        ${a_s_selector_clickable.map(s=>`${s}.clicked`).join(',')}{
-            background: ${f_s_hsla(o_variables.o_hsla__bg_active)};
-            color: ${f_s_hsla(o_variables.o_hsla__fg_active)};
-            cursor:pointer;
-        }
-        ${a_s_selector_clickable.map(s=>`${s}.clicked:hover`).join(',')}{
-            background: ${f_s_hsla(o_variables.o_hsla__bg_active_hover)};
-            color: ${f_s_hsla(o_variables.o_hsla__fg_active_hover)};
-            cursor:pointer;
-        }
-            
-
+            `
+        }).join('\n')}
         .position_relative{
             position:relative
         }
-        .o_js_s_name_month_n_year{
-            position:absolute;
-            top:100%;
-            left:0;
-            width:100%;
-        }
-        input, button{
-            border:none;
-            outline:none;
-            flex: 1 1 auto;
-        }
+
         .input{
             display:flex;
         }
@@ -214,6 +209,9 @@ let f_s_css_from_o_variables = function(o_variables){
             padding: 0;
             margin:0;
         }
+        span{
+            display: inline-block;
+        }
 
         .border_shadow_popup{
             box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -234,7 +232,32 @@ let f_s_css_from_o_variables = function(o_variables){
                     .pb-${s_n}_rem{padding-bottom: ${num}rem}
                 `
             }
-        ).join("\n")} `;
+        ).join("\n")} 
+        
+        
+        ${a_s_state.map(s=>{
+            return `
+                a${(s!='')?`:${s}`:''}{
+                    ${(()=>{
+                        let o_vec = o_variables.o_hsla_primary
+                        if(s!=''){
+                            o_vec = o_vec.add(
+                                o_variables[`o_hsla_addition_vector_${s}`]
+                            )
+                        }
+                        // console.log(o_vec)
+                        return [
+                            (s=='hover')?`text-decoration: underline`:false,
+                            (s=='hover')?`cursor: pointer`:false,
+                            `color: ${f_s_hsla(o_vec)}`, 
+                        ].filter(v=>v).join(';\n')
+                    })()}
+                }
+            `
+        }).join('\n')}
+    
+
+        `;
 
 };
 export {
