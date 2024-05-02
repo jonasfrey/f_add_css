@@ -299,5 +299,6 @@ export {
     o_variables,
     f_s_css_from_o_variables,
     f_add_css, 
-    f_s_css_prefixed
+    f_s_css_prefixed, 
+    f_s_hsla
 }
